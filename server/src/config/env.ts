@@ -1,0 +1,10 @@
+import { z } from "zod";
+
+const envSchema = z.object({
+    DATABASE_URL: z.string(),
+    JWT_SECRET: z.string(),
+    REDIS_URL: z.string(),
+    PORT: z.coerce.number()
+})
+
+export const env = envSchema.parse(process.env);
