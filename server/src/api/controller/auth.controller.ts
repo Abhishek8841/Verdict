@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
-import { idSchema, signinSchema, signupSchema } from "../schema/auth.schema.js";
+import { signinSchema, signupSchema } from "../schema/auth.schema.js";
 import { signupService, signinService, meService } from "../services/auth.services.js";
+import { idSchema } from "../schema/problem.schema.js";
 
 
 export const signup = async (req: Request, res: Response) => {
@@ -59,11 +60,6 @@ export const signin = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
     try {
-        const result = idSchema.safeParse(req.id);
-        if (!result.success) return res.status(400).json({
-            success: false,
-            message: "Wrong inputs"
-        })
         res.clearCookie("token", {
             httpOnly: true,
             sameSite: "lax",

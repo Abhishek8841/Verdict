@@ -1,8 +1,9 @@
 import { prisma } from "../../../shared/db/prisma.js";
 import { env } from "../../config/env.js";
-import type { idType, signinType, signupType } from "../schema/auth.schema.js";
+import type { signinType, signupType } from "../schema/auth.schema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import type { idType } from "../schema/problem.schema.js";
 
 
 export const signupService = async (signupPayload: signupType) => {
@@ -62,4 +63,10 @@ export const meService = async (mePayload: idType) => {
 
     return user;
 
+}
+
+export const authMiddleWareService = (token: string) => {
+    const payload = jwt.verify(token, env.JWT_SECRET);
+    if (typeof (payload) === "string") throw new Error("Invalid input");
+    return payload;
 }
