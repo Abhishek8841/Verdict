@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../shared/db/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String @id @default(cuid())
+  email         String @unique
+  username      String @unique
+  passwordHash  String
+
+  submissions   Submission[]
+  solvedProblems SolvedProblem[]
+
+  createdAt     DateTime @default(now())
+}
+
+model Problem {
+  id          String @id @default(cuid())
+
+  title       String @unique
+  slug        String @unique
+
+  description String
+  difficulty  Difficulty
+
+  testCases   TestCase[]
+  submissions Submission[]
+
+  solvedBy    SolvedProblem[]
+
+  createdAt   DateTime @default(now())
+}
+
+model TestCase {
+  id          String @id @default(cuid())
+
+  input       String
+  output      String
+
+  isHidden    Boolean
+
+  problemId   String
+  problem     Problem @relation(fields: [problemId], references: [id])
+}
+
+model Submission {
+  id          String @id @default(cuid())
+
+  code        String
+
+  language    Language
+
+  status      SubmissionStatus
+
+  userId      String
+  problemId   String
+
+  user         User @relation(fields: [userId], references: [id])
+  problem      Problem @relation(fields: [problemId], references: [id])
+
+  createdAt    DateTime @default(now())
+}
+
+model SolvedProblem {
+  id          String @id @default(cuid())
+
+  userId      String
+  problemId   String
+
+  user         User @relation(fields: [userId], references: [id])
+  problem      Problem @relation(fields: [problemId], references: [id])
+
+  solvedAt     DateTime @default(now())
+
+  @@unique([userId, problemId])
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum Language {
+  CPP
+  PYTHON
+  JAVA
+  JAVASCRIPT
+}
+
+enum SubmissionStatus {
+  PENDING
+  RUNNING
+  ACCEPTED
+  WRONG_ANSWER
+  TLE
+  MLE
+  RUNTIME_ERROR
+  COMPILATION_ERROR
+}

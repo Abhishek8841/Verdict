@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment variables
+.env
+.env.local
+.env.*
+
+# Prisma generated client
+shared/db/generated/
+
+# Prisma migration lock
+prisma/migrations/**/migration_lock.toml
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Coverage
+coverage/
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# PM2
+.pm2/
+
+# Temporary files
+tmp/
+temp/
+
+# Docker
+*.pid
+
+# Misc
+*.swp
+*.swo
