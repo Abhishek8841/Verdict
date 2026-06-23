@@ -9,6 +9,9 @@ class QueueManager {
             "execute",
             {
                 submissionId
+            },
+            {
+                attempts: 3,
             }
         );
     }

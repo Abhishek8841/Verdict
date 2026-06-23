@@ -6,7 +6,8 @@ export async function processSubmission(
     job: Job<{ submissionId: string }>
 ) {
     const id = job.data.submissionId;
-    await prisma.submission.update(
+    console.log(id);
+    const submission = await prisma.submission.update(
         {
             where: { id },
             data: {
@@ -14,6 +15,15 @@ export async function processSubmission(
             }
         }
     );
-    
-    // docker 
+    await new Promise(r => setTimeout(r, 3000));
+    //  docker
+    await prisma.submission.update(
+        {
+            where: { id },
+            data: {
+                status: SubmissionStatus.ACCEPTED
+            }
+        }
+    );
+
 }
