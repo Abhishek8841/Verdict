@@ -11,11 +11,13 @@ export const displayProblemService = async (slug: slugType) => {
             title: true,
             description: true,
             difficulty: true,
-            testCases: true,
-            solvedBy: true,
-            submissions: true,
+            testCases: {
+                where: {
+                    isHidden: false
+                }
+            },
         }
     });
-    if (!problem) throw new Error("Inavlid Url");
+    if (!problem) throw new Error("Invalid Url");
     return problem;
 }

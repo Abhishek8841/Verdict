@@ -39,7 +39,7 @@ export const signin = async (req: Request, res: Response) => {
             message: "Wrong inputs"
         })
         const signinPayload = result.data;
-        const { alreadExist, token } = await signinService(signinPayload);
+        const { alreadyExist, token } = await signinService(signinPayload);
         res.cookie("token", token, {
             httpOnly: true,
             sameSite: "lax",
@@ -48,7 +48,7 @@ export const signin = async (req: Request, res: Response) => {
         return res.status(200).json({
             success: true,
             message: "User logged in successfully",
-            user: alreadExist
+            user: alreadyExist
         });
     } catch (error: any) {
         return res.status(400).json({
@@ -93,6 +93,7 @@ export const me = async (req: Request, res: Response) => {
             {
                 success: true,
                 message: "User details fetched successfully",
+                user
             }
         );
     } catch (error: any) {

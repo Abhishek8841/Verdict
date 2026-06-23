@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import { submitSchema } from "../schema/submission.schema.js";
+import { submissionIdSchema, submitSchema } from "../schema/submission.schema.js";
 import { idSchema, slugSchema } from "../schema/problem.schema.js";
-import { getProblemSubmissionsForUsersService, getSubmissionService, submitService } from "../services/submission.services.js";
-
+import { getProblemSubmissionsForUsersService, getSubmissionByIdOfSubmissionService, getSubmissionService, submitService } from "../services/submission.services.js";
+import z from "zod"
 export const submitController = async (req: Request, res: Response) => {
     try {
         const result1 = submitSchema.safeParse(req.body);
@@ -62,6 +62,30 @@ export const getProblemSubmissionsForUser = async (req: Request, res: Response) 
             success: true,
             message: "Successfully fetched your submissions",
             submissions,
+        })
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: error instanceof Error ? error.message : "Internal server error",
+        })
+    }
+}
+
+
+export const getSubmissionByIdOfSubmission = async (req: Request, res: Response) => {
+    try {
+        const result = submissionIdSchema.safeParse(req.params.submissionId);
+        if (!result.success) return res.status(400).json({
+            success: false,
+            message: "Unable to fetch the Submissions"
+        });
+        const submissionId = result.data;
+        const submission = await getSubmissionByIdOfSubmissionService(submissionId);
+
+        return res.json({
+            success: true,
+            message: "Successfully fetched the submissions",
+            submission,
         })
     } catch (error) {
         return res.status(400).json({

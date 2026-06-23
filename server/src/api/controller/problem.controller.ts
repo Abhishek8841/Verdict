@@ -1,18 +1,18 @@
 import type { Request, Response } from "express";
-import { allProblemService, displayProblemService } from "../services/problem.services.js";
 import { idSchema, slugSchema } from "../schema/problem.schema.js";
+import { allProblemService, displayProblemService } from "../services/problem.services.js";
 
 export const allProblems = async (req: Request, res: Response) => {
     try {
         const result = idSchema.safeParse(req.id);
-        if (!result.success) res.status(400).json({
+        if (!result.success) return res.status(400).json({
             success: false,
             message: "Invalid user"
         });
 
         const problems = await allProblemService();
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Successfully fetched all the problems",
             problems,
@@ -35,7 +35,7 @@ export const getProblem = async (req: Request, res: Response) => {
             message: "Unable to fetch the problems. Check the url."
         });
 
-        const problem = displayProblemService(result.data);
+        const problem = await displayProblemService(result.data);
 
         res.status(200).json({
             success: true,

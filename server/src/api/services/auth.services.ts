@@ -36,19 +36,19 @@ export const signupService = async (signupPayload: signupType) => {
 export const signinService = async (signupPayload: signinType) => {
 
     const { username, password } = signupPayload;
-    const alreadExist = await prisma.user.findUnique({
+    const alreadyExist = await prisma.user.findUnique({
         where: { username }
     });
 
-    if (!alreadExist) throw new Error("User doesn't exist. Signup first.");
+    if (!alreadyExist) throw new Error("User doesn't exist. Signup first.");
 
-    const isCorrect = await bcrypt.compare(password, alreadExist.passwordHash);
+    const isCorrect = await bcrypt.compare(password, alreadyExist.passwordHash);
     if (!isCorrect) throw new Error("Invalid password");
 
-    const payload = { id: alreadExist.id };
+    const payload = { id: alreadyExist.id };
     const token = jwt.sign(payload, env.JWT_SECRET);
 
-    return { alreadExist, token };
+    return { alreadyExist, token };
 }
 
 export const meService = async (mePayload: idType) => {
