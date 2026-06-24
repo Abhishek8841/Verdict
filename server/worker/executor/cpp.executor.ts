@@ -1,6 +1,6 @@
 import { SubmissionStatus } from "../../shared/db/generated/prisma/enums.js";
 import { DockerManager } from "../docker/docker-manager.js";
-import { tempFileManager } from "../docker/tempFileManager.js";
+import { tempFileManager } from "../docker/tempfile-manager.js";
 import type { ExecutionResult } from "../types/execution-result.types.js";
 import type { Executor } from "./executor.interface.js";
 

@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { submissionIdSchema, submitSchema } from "../schema/submission.schema.js";
 import { idSchema, slugSchema } from "../schema/problem.schema.js";
 import { getProblemSubmissionsForUsersService, getSubmissionByIdOfSubmissionService, getSubmissionService, submitService } from "../services/submission.services.js";
+
 export const submitController = async (req: Request, res: Response) => {
     try {
         const result1 = submitSchema.safeParse(req.body);
