@@ -23,17 +23,31 @@ export class DockerManager {
                     gcc:latest
                     bash -c "
                     g++ /app/${cppFile} -o /tmp/${executable} &&
-                    /tmp/${executable} < /app/${inputFile}
+                    timeout 2s /tmp/${executable} < /app/${inputFile}
                     `;
-        const {
-            stdout,
-            stderr
-        } =
-            await exe(command);
+        try {
+            const {
+                stdout,
+                stderr
+            } =
+                await exe(command);
 
-        return {
-            stdout,
-            stderr
-        };
+            return {
+                stdout,
+                stderr,
+                exitcode: 0
+            };
+
+        } catch (error: any) {
+            return {
+                stdout:
+                    error.stdout ?? "",
+                stderr:
+                    error.stderr ?? "",
+                exitcode:
+                    error.code ?? -1
+            };
+
+        }
     }
 };

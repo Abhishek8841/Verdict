@@ -1,13 +1,13 @@
 import path from "path";
 import fs from "fs/promises";
 
-export class tempFileManage {
+export class tempFileManager {
     private static dir = path.join(
         process.cwd(),
         "temp"
     )
 
-    private static async createCodeFile(submissionId: string, code: string) {
+    static async createCodeFile(submissionId: string, code: string) {
         await fs.mkdir(this.dir, { recursive: true })
         const tempFilePath = path.join(
             this.dir,
@@ -20,7 +20,7 @@ export class tempFileManage {
         return tempFilePath;
     }
 
-    private static async creatTestFile(submissionId: string, input: string) {
+    static async creatTestFile(submissionId: string, input: string) {
         await fs.mkdir(this.dir, { recursive: true })
         const tempFilePath = path.join(
             this.dir,

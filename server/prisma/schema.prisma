@@ -13,22 +13,22 @@ datasource db {
 }
 
 model User {
-  id            String @id @default(cuid())
+  id           String @id @default(cuid())
   // email         String @unique
-  username      String @unique
-  passwordHash  String
+  username     String @unique
+  passwordHash String
 
-  submissions   Submission[]
+  submissions    Submission[]
   solvedProblems SolvedProblem[]
 
-  createdAt     DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
 model Problem {
-  id          String @id @default(cuid())
+  id String @id @default(cuid())
 
-  title       String @unique
-  slug        String @unique
+  title String @unique
+  slug  String @unique
 
   description String
   difficulty  Difficulty
@@ -36,51 +36,51 @@ model Problem {
   testCases   TestCase[]
   submissions Submission[]
 
-  solvedBy    SolvedProblem[]
+  solvedBy SolvedProblem[]
 
-  createdAt   DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
 model TestCase {
-  id          String @id @default(cuid())
+  id String @id @default(cuid())
 
-  input       String
-  output      String
+  input  String
+  output String
 
-  isHidden    Boolean
+  isHidden Boolean
 
-  problemId   String
-  problem     Problem @relation(fields: [problemId], references: [id])
+  problemId String
+  problem   Problem @relation(fields: [problemId], references: [id])
 }
 
 model Submission {
-  id          String @id @default(cuid())
+  id String @id @default(cuid())
 
-  code        String
+  code String
 
-  language    Language
+  language Language
 
-  status      SubmissionStatus
+  status SubmissionStatus
 
-  userId      String
-  problemId   String
+  userId    String
+  problemId String
 
-  user         User @relation(fields: [userId], references: [id])
-  problem      Problem @relation(fields: [problemId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  problem Problem @relation(fields: [problemId], references: [id])
 
-  createdAt    DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
 model SolvedProblem {
-  id          String @id @default(cuid())
+  id String @id @default(cuid())
 
-  userId      String
-  problemId   String
+  userId    String
+  problemId String
 
-  user         User @relation(fields: [userId], references: [id])
-  problem      Problem @relation(fields: [problemId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  problem Problem @relation(fields: [problemId], references: [id])
 
-  solvedAt     DateTime @default(now())
+  solvedAt DateTime @default(now())
 
   @@unique([userId, problemId])
 }
@@ -99,6 +99,7 @@ enum Language {
 }
 
 enum SubmissionStatus {
+  SUCCESS
   PENDING
   RUNNING
   ACCEPTED

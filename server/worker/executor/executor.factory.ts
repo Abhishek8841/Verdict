@@ -1,7 +1,7 @@
 import { Language } from "../../shared/db/generated/prisma/enums.js";
-import { cppExecutor } from "./cppExecutor.js";
-import type { Executor } from "./Executor.js";
-import { jsExecutor } from "./jsExecutor.js";
+import { cppExecutor } from "./cpp.executor.js";
+import type { Executor } from "./executor.interface.js";
+import { jsExecutor } from "./js.executor.js";
 
 export class ExecutorFactory {
 
