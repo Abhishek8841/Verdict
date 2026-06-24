@@ -3,15 +3,15 @@ import z from "zod";
 
 export const signupSchema = z.object(
     {
-        username: z.string().min(4).max(10),
-        password: z.string().min(4).max(10)
+        username: z.string().min(4).max(18),
+        password: z.string().min(4).max(18)
     }
 )
 
 export const signinSchema = z.object(
     {
-        username: z.string().min(4).max(10),
-        password: z.string().min(4).max(10)
+        username: z.string().min(4).max(18),
+        password: z.string().min(4).max(18)
     }
 )
 

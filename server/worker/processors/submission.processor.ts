@@ -8,7 +8,7 @@ export async function processSubmission(
     job: Job<{ submissionId: string }>
 ) {
     const id = job.data.submissionId;
-    console.log(id);
+    console.log("received job with " + id);
     const submission = await prisma.submission.update(
         {
             where: { id },
@@ -29,9 +29,11 @@ export async function processSubmission(
             }
         }
     );
+    console.log(submission);
     try {
         const executor = ExecutorFactory.getExecutor(submission.language);
         for (const testcase of submission.problem.testCases) {
+            console.log(testcase);
             const result = await executor.execute(submission.id, submission.code, testcase.input);
             if (result.status !== SubmissionStatus.SUCCESS) {
                 await prisma.submission.update(
@@ -44,6 +46,7 @@ export async function processSubmission(
                 );
                 return;
             }
+            console.log(result.output);
             if (!compareOutputs(testcase.output, result.output)) {
                 await prisma.submission.update(
                     {
@@ -75,8 +78,9 @@ export async function processSubmission(
         } catch (error) {
             console.log("Problem was already solved by the user " + error)
         }
-
+        console.log("problem solved---end of worker");
     } catch (error) {
+        console.log("error occured in worker")
         await prisma.submission.update(
             {
                 where: { id },
