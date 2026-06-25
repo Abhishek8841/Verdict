@@ -7,6 +7,9 @@ import { compareOutputs } from "../compare/output.comparator.js";
 export async function processSubmission(
     job: Job<{ submissionId: string }>
 ) {
+
+    await job.updateProgress(10);
+    
     const id = job.data.submissionId;
     console.log("received job with " + id);
     const submission = await prisma.submission.update(
@@ -29,6 +32,9 @@ export async function processSubmission(
             }
         }
     );
+
+    await job.updateProgress(30);
+    
     console.log(submission);
     try {
         const executor = ExecutorFactory.getExecutor(submission.language);
@@ -59,6 +65,9 @@ export async function processSubmission(
                 return;
             }
         }
+
+        await job.updateProgress(60);
+        
         await prisma.submission.update(
             {
                 where: { id },
@@ -67,6 +76,8 @@ export async function processSubmission(
                 }
             }
         );
+
+        await job.updateProgress(90);
 
         try {
             await prisma.solvedProblem.create({
@@ -78,6 +89,9 @@ export async function processSubmission(
         } catch (error) {
             console.log("Problem was already solved by the user " + error)
         }
+
+        await job.updateProgress(100);
+
         console.log("problem solved---end of worker");
     } catch (error) {
         console.log("error occured in worker")
@@ -89,5 +103,7 @@ export async function processSubmission(
                 }
             }
         );
+        throw error;
+        // if we dont throw this error then bullMQ thinks that job was completed;
     }
 }
