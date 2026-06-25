@@ -1,5 +1,5 @@
 import { QueueEvents } from "bullmq";
-import { redismanager } from "../redis/RedisManager.js";
+import { redismanager } from "../../shared/redis/RedisManager.js";
 
 export const submissionQueueEvents = new QueueEvents(
     "submissionQueue",
