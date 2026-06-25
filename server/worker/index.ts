@@ -1,4 +1,3 @@
-import { submissionQueueEvents } from "../shared/queue/queue-events.js";
 import { redismanager } from "../shared/redis/RedisManager.js";
 import { processSubmission } from "./processors/submission.processor.js";
 import { Worker } from "bullmq";
@@ -6,7 +5,12 @@ import { Worker } from "bullmq";
 const submission_worker = new Worker(
     "submissionQueue",
     processSubmission,
-    { connection: redismanager.connection }
+    {
+        connection: redismanager.connection,
+        maxStalledCount: 2,
+        stalledInterval: 30000,
+        // default stalled interval is also 30s -> it tells how often bullMQ should check for stalled jobs and add them back to queue ?
+    }
 );
 
 submission_worker.on("completed", (job) => {
@@ -30,7 +34,7 @@ submission_worker.on("stalled", jobId => {
 })
 // stalled jobs happen when worker vanishes before acknowledging the jobs status
 // this can lead to idempotency issues 
-// hit db before processing incase of payments and important ops
+// hit db before processing incase of payments and other important ops
 
 submission_worker.on("active", job => {
     console.log(

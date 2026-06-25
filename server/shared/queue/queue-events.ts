@@ -9,7 +9,10 @@ export const submissionQueueEvents = new QueueEvents(
 );
 
 await submissionQueueEvents.waitUntilReady();
-
+// awaiting in the top level thread -> works in esm (.js) imports
+// waits for redis connection before registering events
+// good for prod
+ 
 submissionQueueEvents.on(
     "completed",
     ({ jobId }) => {

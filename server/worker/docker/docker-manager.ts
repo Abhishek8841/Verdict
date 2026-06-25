@@ -37,7 +37,6 @@ export class DockerManager {
                 exitcode:
                     error.code ?? -1
             };
-
         }
     }
 };
