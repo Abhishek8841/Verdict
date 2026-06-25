@@ -6,5 +6,8 @@ import { submissionQueueEvents } from "./queue/queue-events.js";
 
 import app from "./api/api.js";
 import { env } from "./config/env.js";
+import { initWebSocketServer } from "./ws/ws.js";
 
-app.listen(env.PORT, () => { console.log("Express server is live") });
+const server = app.listen(env.PORT, () => { console.log("Express server is live") });
+
+initWebSocketServer(server);

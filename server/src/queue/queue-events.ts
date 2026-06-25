@@ -21,6 +21,7 @@ await submissionQueueEvents.waitUntilReady();
 submissionQueueEvents.on(
     "completed",
     ({ jobId, returnvalue }) => {
+        console.log("queue event started")
         const data = (typeof returnvalue === "string" ? JSON.parse(returnvalue) : returnvalue) as submissionResultType;
         const sendSubmissionDoneMessage: ServerMessageType = {
             type: "submission_processed",

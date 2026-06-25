@@ -4,12 +4,15 @@ import { extractUserId } from "./utils/extract-user.utils.js";
 import { socketManager } from "./socker-manager.js";
 
 
-function initWebSocketServer(server: Server) {
+export function initWebSocketServer(server: Server) {
     const wss = new WebSocketServer({ server });
 
 
     wss.on("connection", (ws: WebSocket, req: IncomingMessage) => {
+        console.log(req.headers);
+
         const id = extractUserId(req);
+        console.log("userid is ", id)
         if (!id) {
             ws.close();
             return;
