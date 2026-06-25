@@ -1,6 +1,6 @@
 import { SubmissionStatus } from "../../../shared/db/generated/prisma/enums.js";
 import { prisma } from "../../../shared/db/prisma.js";
-import { queueManager } from "../../queue/queueManager.js";
+import { queueManager } from "../../queue/queue-manager.js";
 import type { idType, slugType } from "../schema/problem.schema.js";
 import type { submissionIdType, submitType } from "../schema/submission.schema.js";
 

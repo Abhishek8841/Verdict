@@ -108,4 +108,5 @@ enum SubmissionStatus {
   MLE
   RUNTIME_ERROR
   COMPILATION_ERROR
+  INTERNAL_ERROR
 }

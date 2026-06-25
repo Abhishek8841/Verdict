@@ -3,13 +3,14 @@ import { prisma } from "../../shared/db/prisma.js";
 import { SubmissionStatus } from "../../shared/db/generated/prisma/enums.js";
 import { ExecutorFactory } from "../executor/executor.factory.js";
 import { compareOutputs } from "../compare/output.comparator.js";
+import type { submissionResultType } from "../../shared/types/submission-job-result.types.js";
 
 export async function processSubmission(
     job: Job<{ submissionId: string }>
-) {
+) : Promise<submissionResultType>{
 
     await job.updateProgress(10);
-    
+
     const id = job.data.submissionId;
     console.log("received job with " + id);
     const submission = await prisma.submission.update(
@@ -34,7 +35,7 @@ export async function processSubmission(
     );
 
     await job.updateProgress(30);
-    
+
     console.log(submission);
     try {
         const executor = ExecutorFactory.getExecutor(submission.language);
@@ -50,7 +51,11 @@ export async function processSubmission(
                         }
                     }
                 );
-                return;
+                return {
+                    submissionId: submission.id,
+                    submissionResult: result.status,
+                    userId: submission.userId,
+                };
             }
             console.log(result.output);
             if (!compareOutputs(testcase.output, result.output)) {
@@ -62,12 +67,16 @@ export async function processSubmission(
                         }
                     }
                 );
-                return;
+                return {
+                    submissionId: submission.id,
+                    submissionResult: SubmissionStatus.WRONG_ANSWER,
+                    userId: submission.userId
+                };
             }
         }
 
         await job.updateProgress(60);
-        
+
         await prisma.submission.update(
             {
                 where: { id },
@@ -93,13 +102,20 @@ export async function processSubmission(
         await job.updateProgress(100);
 
         console.log("problem solved---end of worker");
+        return {
+            submissionId: submission.id,
+            submissionResult: SubmissionStatus.ACCEPTED,
+            userId: submission.userId
+        };
+
     } catch (error) {
         console.log("error occured in worker")
+
         await prisma.submission.update(
             {
                 where: { id },
                 data: {
-                    status: SubmissionStatus.COMPILATION_ERROR
+                    status: SubmissionStatus.INTERNAL_ERROR,
                 }
             }
         );
