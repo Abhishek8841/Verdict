@@ -40,8 +40,7 @@ export default function () {
             }
         })
     }
-
-    <form onSubmit={submitHandler}>
+    return (<form onSubmit={submitHandler}>
         <label>
             USERNAME
             <input
@@ -54,15 +53,17 @@ export default function () {
         </label>
         <div />
         <label>
-            USERNAME
+            PASSWORD
             <input
-                type="text"
+                type="password"
                 placeholder="password"
                 value={formData.password}
                 onChange={changeHandler}
                 name="password"
             ></input>
         </label>
-
+        <button>LOGIN</button>
     </form >
+    );
+
 }

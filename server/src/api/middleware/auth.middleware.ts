@@ -3,6 +3,8 @@ import { authMiddleWareService } from "../services/auth.services.js";
 
 export const authMiddleWare = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        console.log("Path:", req.path);
+        console.log("Cookie:", req.headers.cookie);
         const token = req.cookies.token;
         if (!token) throw new Error("Invalid request");
         const payload = authMiddleWareService(token);

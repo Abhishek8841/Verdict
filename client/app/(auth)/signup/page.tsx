@@ -6,7 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react"
 
-export default function () {
+export default function SignUp() {
     const router = useRouter();
     const { fetchUser } = useAuth();
     const [formData, setFormData] = useState({
@@ -35,13 +35,12 @@ export default function () {
         const { name, value } = e.target;
         setFormData((prev) => {
             return {
-                [name]: value,
                 ...prev,
+                [name]: value,
             }
         })
     }
-
-    <form onSubmit={submitHandler}>
+    return (<form onSubmit={submitHandler}>
         <label>
             USERNAME
             <input
@@ -54,15 +53,16 @@ export default function () {
         </label>
         <div />
         <label>
-            USERNAME
+            PASSWORD
             <input
-                type="text"
+                type="password"
                 placeholder="password"
                 value={formData.password}
                 onChange={changeHandler}
                 name="password"
             ></input>
         </label>
-
+        <button>SIGNUP</button>
     </form >
+    );
 }

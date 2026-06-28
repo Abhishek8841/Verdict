@@ -19,6 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function fetchUser() {
         try {
             setLoading(true);
+            console.log("in fetchuser")
             const result = await me();
             setUser(result.user);
         } catch (error) {

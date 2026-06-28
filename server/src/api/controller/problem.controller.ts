@@ -4,11 +4,11 @@ import { allProblemService, displayProblemService } from "../services/problem.se
 
 export const allProblems = async (req: Request, res: Response) => {
     try {
-        const result = idSchema.safeParse(req.id);
-        if (!result.success) return res.status(400).json({
-            success: false,
-            message: "Invalid user"
-        });
+        // const result = idSchema.safeParse(req.id);
+        // if (!result.success) return res.status(400).json({
+        //     success: false,
+        //     message: "Invalid user"
+        // });
 
         const problems = await allProblemService();
 
