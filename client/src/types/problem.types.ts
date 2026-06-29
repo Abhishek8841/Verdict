@@ -8,3 +8,18 @@ export type AllProblemsType = {
     difficulty: Difficulty;
     createdAt: Date;
 }[]
+
+
+export type problemType = {
+    id: string;
+    title: string;
+    description: string;
+    difficulty: Difficulty;
+    testCases: {
+        id: string;
+        output: string;
+        problemId: string;
+        input: string;
+        isHidden: boolean;
+    }[];
+}
